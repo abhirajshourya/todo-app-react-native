@@ -39,7 +39,7 @@ const Task = ({ taskId, task, setTaskList }) => {
   }
 
   return (
-    <Pressable style={styles.container}>
+    <View style={styles.container}>
       <View
         style={{
           flex: 0.9,
@@ -67,7 +67,7 @@ const Task = ({ taskId, task, setTaskList }) => {
         />
         <Entypo name="trash" size={24} color="black" onPress={handleDeleteTask} />
       </View>
-    </Pressable>
+    </View>
   );
 };
 
