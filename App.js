@@ -1,4 +1,3 @@
-import { NavigationContainer } from '@react-navigation/native';
 import { useState } from 'react';
 import { SafeAreaView, StatusBar } from 'react-native';
 import Header from './src/components/Header/Header';
@@ -10,13 +9,11 @@ export default function App() {
   const [taskList, setTaskList] = useState({});
 
   return (
-    <NavigationContainer>
-      <SafeAreaView style={styles.container}>
-        <StatusBar />
-        <Header />
-        <AddTask setTaskList={setTaskList} />
-        <Tasks taskList={taskList} setTaskList={setTaskList} />
-      </SafeAreaView>
-    </NavigationContainer>
+    <SafeAreaView style={styles.container}>
+      <StatusBar />
+      <Header />
+      <AddTask setTaskList={setTaskList} />
+      <Tasks taskList={taskList} setTaskList={setTaskList} />
+    </SafeAreaView>
   );
 }
