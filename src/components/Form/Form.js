@@ -4,6 +4,7 @@ import { Keyboard, Text, TextInput, TouchableHighlight, View } from 'react-nativ
 import styles from './styles';
 import { ActivityIndicator } from 'react-native-paper';
 import uuid from 'react-uuid';
+import { createTodo } from '../../data/controller';
 
 const Form = ({ setTaskList }) => {
   const [isDone, setIsDone] = useState(false);
@@ -15,23 +16,29 @@ const Form = ({ setTaskList }) => {
     if (taskDesc) {
       setIsLoading(true);
 
-      const newId = uuid();
-
       todo = {
         description: taskDesc,
         done: isDone,
       };
 
-      setTaskList((prevTaskList) => {
-        return {
-          ...prevTaskList,
-          [newId]: todo,
-        };
-      });
-      setTaskDesc('');
-      setIsDone(false);
-      setErrorMessage(null);
-      setIsLoading(false);
+      createTodo(todo)
+        .then((resTodo) => {
+          setTaskList((prevTaskList) => {
+            return {
+              ...prevTaskList,
+              [resTodo.id]: resTodo,
+            };
+          });
+          setTaskDesc('');
+          setIsDone(false);
+          setErrorMessage(null);
+          setIsLoading(false);
+        })
+        .catch(() => {
+          Alert.alert('Error', 'An error occurred while adding the task');
+          setIsLoading(false);
+        });
+
       Keyboard.dismiss();
     } else {
       setIsLoading(false);
