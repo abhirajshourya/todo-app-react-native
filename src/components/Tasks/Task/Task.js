@@ -2,21 +2,28 @@ import React, { useState } from 'react';
 import { Alert, Pressable, Switch, Text, View } from 'react-native';
 import styles from './styles';
 import { Entypo } from '@expo/vector-icons';
+import { updateTodo } from '../../../data/controller';
 
 const Task = ({ taskId, task, setTaskList }) => {
   const [taskStatus, setTaskStatus] = useState(task.done);
 
   function handleStatusChange(value) {
     setTaskStatus(value);
-    setTaskList((prevTaskList) => {
-      return {
-        ...prevTaskList,
-        [taskId]: {
-          ...prevTaskList[taskId],
-          done: value,
-        },
-      };
-    });
+    updateTodo(taskId, { done: value })
+      .then(() => {
+        setTaskList((prevTaskList) => {
+          return {
+            ...prevTaskList,
+            [taskId]: {
+              ...prevTaskList[taskId],
+              done: value,
+            },
+          };
+        });
+      })
+      .catch(() => {
+        Alert.alert('Error', 'An error occurred while updating the task');
+      });
   }
 
   function handleDeleteTask() {
