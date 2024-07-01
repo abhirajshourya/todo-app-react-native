@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Keyboard, Text, TextInput, TouchableHighlight, View } from 'react-native';
 import styles from './styles';
 import { ActivityIndicator } from 'react-native-paper';
-import uuid from 'react-uuid';
 import { createTodo } from '../../data/controller';
 
 const Form = ({ setTaskList }) => {
@@ -26,7 +25,7 @@ const Form = ({ setTaskList }) => {
           setTaskList((prevTaskList) => {
             return {
               ...prevTaskList,
-              [resTodo.id]: resTodo,
+              [resTodo.id]: todo,
             };
           });
           setTaskDesc('');
