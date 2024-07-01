@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Alert, Pressable, Switch, Text, View } from 'react-native';
 import styles from './styles';
 import { Entypo } from '@expo/vector-icons';
-import { updateTodo } from '../../../data/controller';
+import { deleteTodo, updateTodo } from '../../../data/controller';
 
 const Task = ({ taskId, task, setTaskList }) => {
   const [taskStatus, setTaskStatus] = useState(task.done);
@@ -36,10 +36,16 @@ const Task = ({ taskId, task, setTaskList }) => {
         text: 'OK',
         style: 'destructive',
         onPress: () => {
-          setTaskList((prevTaskList) => {
-            delete prevTaskList[taskId];
-            return { ...prevTaskList };
-          });
+          deleteTodo(taskId)
+            .then(() => {
+              setTaskList((prevTaskList) => {
+                delete prevTaskList[taskId];
+                return { ...prevTaskList };
+              });
+            })
+            .catch(() => {
+              Alert.alert('Error', 'An error occurred while deleting the task');
+            });
         },
       },
     ]);
