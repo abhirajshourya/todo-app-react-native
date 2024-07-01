@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Alert, Pressable, Switch, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, Switch, Text, View } from 'react-native';
 import styles from './styles';
 import { Entypo } from '@expo/vector-icons';
 import { deleteTodo, updateTodo } from '../../../data/controller';
+import { colourPalette } from '../../../styles/main';
 
 const Task = ({ taskId, task, setTaskList }) => {
   const [taskStatus, setTaskStatus] = useState(task.done);
+  const [isLoading, setIsLoading] = useState(false);
 
   function handleStatusChange(value) {
     setTaskStatus(value);
@@ -36,15 +38,18 @@ const Task = ({ taskId, task, setTaskList }) => {
         text: 'OK',
         style: 'destructive',
         onPress: () => {
+          setIsLoading(true);
           deleteTodo(taskId)
             .then(() => {
               setTaskList((prevTaskList) => {
                 delete prevTaskList[taskId];
                 return { ...prevTaskList };
               });
+              setIsLoading(false);
             })
             .catch(() => {
               Alert.alert('Error', 'An error occurred while deleting the task');
+              setIsLoading(false);
             });
         },
       },
@@ -78,7 +83,11 @@ const Task = ({ taskId, task, setTaskList }) => {
             handleStatusChange(value);
           }}
         />
-        <Entypo name="trash" size={24} color="black" onPress={handleDeleteTask} />
+        {isLoading ? (
+          <ActivityIndicator color={colourPalette.primary} />
+        ) : (
+          <Entypo name="trash" size={24} color="black" onPress={handleDeleteTask} />
+        )}
       </View>
     </View>
   );
